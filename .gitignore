@@ -1,6 +1,10 @@
 # This file is used to ignore files which are generated
 # ----------------------------------------------------------------------------
 
+#user defined
+Test/Google_tests/
+Test/gtest_dependency.pri
+
 *~
 *.autosave
 *.a
