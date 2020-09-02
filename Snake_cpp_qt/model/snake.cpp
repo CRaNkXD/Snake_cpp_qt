@@ -49,10 +49,10 @@ void Snake::move()
         switch (this->m_snake[i].direction)
         {
         case constants::Direction::UP:
-            ++this->m_snake[i].position.first;
+            --this->m_snake[i].position.first;
             break;
         case constants::Direction::DOWN:
-            --this->m_snake[i].position.first;
+            ++this->m_snake[i].position.first;
             break;
         case constants::Direction::LEFT:
             --this->m_snake[i].position.second;
