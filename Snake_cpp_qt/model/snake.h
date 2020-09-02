@@ -1,11 +1,29 @@
-#ifndef SNAKE_H
-#define SNAKE_H
+#pragma once
 
+#include <vector>
+#include <utility>
 
-class snake
-{
-public:
-    snake();
+#include "constants/constants.h"
+
+typedef unsigned short UShort ;
+typedef std::pair<UShort, UShort> Position;
+struct SnakePart{
+   Position position;
+   constants::Direction direction;
 };
+typedef std::vector<SnakePart> SnakeComplete;
 
-#endif // SNAKE_H
+class Snake
+{
+private:
+    SnakeComplete m_snake;
+    UShort m_length;
+
+public:
+    Snake();
+    Snake(const Position& start_position, const constants::Direction& start_direction, const UShort& start_length, const UShort& max_length);
+    void move();
+    const SnakeComplete& get_snake() const;
+    void add_part();
+    void set_front_direction(const constants::Direction& direction);
+};
