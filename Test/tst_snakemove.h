@@ -1,19 +1,54 @@
-#ifndef TST_SNAKEMOVE_H
-#define TST_SNAKEMOVE_H
+#pragma once
 
 #include <gtest/gtest.h>
 #include <gmock/gmock-matchers.h>
 
-#include "../Snake_cpp_qt/model/snake.h"
+#include "model/snake.h"
+#include "constants/constants.h"
+
+class SnakeTest : public ::testing::Test
+{
+protected:
+    Snake snake_test;
+    Position start_position{10,10};
+    constants::Direction start_direction = constants::Direction::RIGHT;
+    UShort start_length = 3;
+    UShort max_length = 10;
+    void SetUp() override
+    {
+        snake_test = Snake(start_position, start_direction, start_length, max_length);
+    }
+};
 
 using namespace testing;
 
-TEST(Snake, SnakeMove)
+TEST_F(SnakeTest, SnakeInit)
 {
-    Snake snake_test;
+    SnakeComplete snake = snake_test.get_snake();
+    EXPECT_EQ(snake.size(), 10);
+    Position position = start_position;
 
-    EXPECT_EQ(1, 1);
-    ASSERT_THAT(0, Eq(0));
+    Position empty{ 0,0 };
+    EXPECT_EQ(snake[3].position, empty);
+
+    for (UShort i = 0; i < start_length; ++i)
+    {
+        EXPECT_EQ(snake[i].direction, start_direction);
+        EXPECT_EQ(snake[i].position, position);
+        position.second -= 1;
+    }
 }
 
-#endif // TST_SNAKEMOVE_H
+TEST_F(SnakeTest, SnakeMoveStraight)
+{
+    snake_test.move();
+    SnakeComplete snake = snake_test.get_snake();
+    Position position = start_position;
+    position.second += 1;
+    for (UShort i = 0; i < start_length; ++i)
+    {
+        EXPECT_EQ(snake[i].direction, start_direction);
+        EXPECT_EQ(snake[i].position, position);
+        position.second -= 1;
+    }
+}
