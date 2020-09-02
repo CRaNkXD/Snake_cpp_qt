@@ -1,5 +1,4 @@
-#ifndef GAMEWINDOW_H
-#define GAMEWINDOW_H
+#pragma once
 
 #include <QMainWindow>
 
@@ -19,4 +18,3 @@ private:
     Ui::GameWindow *ui;
 
 };
-#endif // GAMEWINDOW_H
