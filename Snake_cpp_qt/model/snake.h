@@ -22,8 +22,9 @@ private:
 public:
     Snake();
     Snake(const Position& start_position, const constants::Direction& start_direction, const UShort& start_length, const UShort& max_length);
-    void move();
     const SnakeComplete& get_snake() const;
+    const UShort& get_length() const;
+    void move();
     void add_part();
     void set_front_direction(const constants::Direction& direction);
 };

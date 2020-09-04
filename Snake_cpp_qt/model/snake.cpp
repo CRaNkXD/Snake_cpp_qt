@@ -10,61 +10,32 @@ m_snake(10), m_length(1)
 Snake::Snake(const Position& start_position, const constants::Direction& start_direction, const UShort& start_length, const UShort& max_length) :
     m_snake(max_length), m_length(start_length)
 {
+    this->m_snake.front().position = start_position;
+    this->m_snake.front().direction = start_direction;
+
     Position next_position{start_position};
 
-    for (UShort i = 0; i < this->m_length; ++i)
+    for (auto it_snake = this->m_snake.begin()+1;
+         it_snake != this->m_snake.begin() + this->m_length;
+         ++it_snake)
     {
-        if (i == 0)
-        {
-            this->m_snake[i].position = start_position;
-            this->m_snake[i].direction = start_direction;
-        }
-        else
-        {
-            switch (start_direction)
-            {
-            case constants::Direction::UP:
-                ++next_position.first;
-                break;
-            case constants::Direction::DOWN:
-                --next_position.first;
-                break;
-            case constants::Direction::LEFT:
-                ++next_position.second;
-                break;
-            case constants::Direction::RIGHT:
-                --next_position.second;
-                break;
-            }
-            this->m_snake[i].position = next_position;
-            this->m_snake[i].direction = start_direction;
-        }
-    }
-}
-
-void Snake::move()
-{
-    for (UShort i = 0; i < this->m_length; ++i)
-    {
-        switch (this->m_snake[i].direction)
+        switch (start_direction)
         {
         case constants::Direction::UP:
-            --this->m_snake[i].position.first;
+            ++next_position.first;
             break;
         case constants::Direction::DOWN:
-            ++this->m_snake[i].position.first;
+            --next_position.first;
             break;
         case constants::Direction::LEFT:
-            --this->m_snake[i].position.second;
+            ++next_position.second;
             break;
         case constants::Direction::RIGHT:
-            ++this->m_snake[i].position.second;
+            --next_position.second;
             break;
         }
-        if (i != 0)
-        {
-            this->m_snake[i].direction = this->m_snake[i-1].direction;
-        }
+        it_snake->position = next_position;
+        it_snake->direction = start_direction;
     }
 }
 
@@ -73,9 +44,59 @@ const SnakeComplete& Snake::get_snake() const
     return this->m_snake;
 }
 
+const UShort& Snake::get_length() const
+{
+    return this->m_length;
+}
+
+void Snake::move()
+{
+    for (auto it_snake = this->m_snake.begin();
+         it_snake != this->m_snake.begin() + this->m_length;
+         ++it_snake)
+    {
+        switch (it_snake->direction)
+        {
+        case constants::Direction::UP:
+            --it_snake->position.first;
+            break;
+        case constants::Direction::DOWN:
+            ++it_snake->position.first;
+            break;
+        case constants::Direction::LEFT:
+            --it_snake->position.second;
+            break;
+        case constants::Direction::RIGHT:
+            ++it_snake->position.second;
+            break;
+        }
+        if (it_snake != this->m_snake.begin())
+        {
+            it_snake->direction = std::prev(it_snake)->direction;
+        }
+    }
+}
+
 void Snake::add_part()
 {
+    this->m_snake.at(m_length) = this->m_snake.at(m_length-1);
 
+    switch (this->m_snake.at(m_length).direction)
+    {
+    case constants::Direction::UP:
+        ++this->m_snake.at(m_length).position.first;
+        break;
+    case constants::Direction::DOWN:
+        --this->m_snake.at(m_length).position.first;
+        break;
+    case constants::Direction::LEFT:
+        ++this->m_snake.at(m_length).position.second;
+        break;
+    case constants::Direction::RIGHT:
+        --this->m_snake.at(m_length).position.second;
+        break;
+    }
+    ++this->m_length;
 }
 
 void Snake::set_front_direction(const constants::Direction &direction)
