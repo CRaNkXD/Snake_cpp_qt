@@ -1,0 +1,18 @@
+<RCC>
+    <qresource prefix="/pics/snake">
+        <file>snake_body_horizontal.png</file>
+        <file>snake_body_vertical.png</file>
+        <file>snake_head_UP.png</file>
+        <file>snake_head_DOWN.png</file>
+        <file>snake_head_LEFT.png</file>
+        <file>snake_head_RIGHT.png</file>
+        <file>snake_tail_DOWN.png</file>
+        <file>snake_tail_LEFT.png</file>
+        <file>snake_tail_RIGHT.png</file>
+        <file>snake_tail_UP.png</file>
+        <file>snake_body_curve_DOWN_LEFT.png</file>
+        <file>snake_body_curve_DOWN_RIGHT.png</file>
+        <file>snake_body_curve_UP_LEFT.png</file>
+        <file>snake_body_curve_UP_RIGHT.png</file>
+    </qresource>
+</RCC>
