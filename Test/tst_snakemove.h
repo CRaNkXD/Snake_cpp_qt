@@ -31,6 +31,7 @@ using namespace testing;
  */
 TEST_F(SnakeTest, SnakeInit)
 {
+    EXPECT_EQ(snake_test.get_length(), start_length);
     const SnakeComplete& snake = snake_test.get_snake();
     EXPECT_EQ(snake.size(), 10);
     Position position = start_position;
@@ -89,4 +90,26 @@ TEST_F(SnakeTest, SnakeMoveCurve)
     --position.second;
     EXPECT_EQ(snake[2].position, position);
 
+}
+
+/**
+ * Tests if the Snake::add_part
+ * adds a new SnakePart at the end of the
+ * current snake depending on the direction of the
+ * previous SnakePart.
+ */
+TEST_F(SnakeTest, SnakeAddPart)
+{
+    snake_test.add_part();
+    const UShort& new_length = snake_test.get_length();
+    EXPECT_EQ(new_length, start_length + 1);
+
+    const SnakeComplete& snake = snake_test.get_snake();
+
+    EXPECT_EQ(snake[new_length-1].direction, start_direction);
+
+    Position prev_position = start_position;
+    prev_position.second -= new_length - 1;
+
+    EXPECT_EQ(snake[new_length-1].position, prev_position);
 }
