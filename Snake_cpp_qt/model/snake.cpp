@@ -39,7 +39,7 @@ Snake::Snake(const Position& start_position, const constants::Direction& start_d
     }
 }
 
-const SnakeComplete& Snake::get_snake() const
+const SnakeVec& Snake::get_snake() const
 {
     return this->m_snake;
 }
@@ -79,21 +79,21 @@ void Snake::move()
 
 void Snake::add_part()
 {
-    this->m_snake.at(m_length) = this->m_snake.at(m_length-1);
+    this->m_snake[m_length] = this->m_snake[m_length-1];
 
-    switch (this->m_snake.at(m_length).direction)
+    switch (this->m_snake[m_length].direction)
     {
     case constants::Direction::UP:
-        ++this->m_snake.at(m_length).position.first;
+        ++this->m_snake[m_length].position.first;
         break;
     case constants::Direction::DOWN:
-        --this->m_snake.at(m_length).position.first;
+        --this->m_snake[m_length].position.first;
         break;
     case constants::Direction::LEFT:
-        ++this->m_snake.at(m_length).position.second;
+        ++this->m_snake[m_length].position.second;
         break;
     case constants::Direction::RIGHT:
-        --this->m_snake.at(m_length).position.second;
+        --this->m_snake[m_length].position.second;
         break;
     }
     ++this->m_length;
@@ -102,4 +102,16 @@ void Snake::add_part()
 void Snake::set_front_direction(const constants::Direction &direction)
 {
     this->m_snake.front().direction = direction;
+}
+
+bool Snake::is_occupied(Position position) const
+{
+    for (const auto &snake_part : this->m_snake)
+    {
+        if(snake_part.position == position)
+        {
+            return true;
+        }
+    }
+    return false;
 }

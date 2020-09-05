@@ -11,20 +11,21 @@ struct SnakePart{
    Position position;
    constants::Direction direction;
 };
-typedef std::vector<SnakePart> SnakeComplete;
+typedef std::vector<SnakePart> SnakeVec;
 
 class Snake
 {
 private:
-    SnakeComplete m_snake;
+    SnakeVec m_snake;
     UShort m_length;
 
 public:
     Snake();
     Snake(const Position& start_position, const constants::Direction& start_direction, const UShort& start_length, const UShort& max_length);
-    const SnakeComplete& get_snake() const;
+    const SnakeVec& get_snake() const;
     const UShort& get_length() const;
     void move();
     void add_part();
     void set_front_direction(const constants::Direction& direction);
+    bool is_occupied(Position position) const;
 };

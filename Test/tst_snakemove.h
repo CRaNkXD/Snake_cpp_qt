@@ -32,7 +32,7 @@ using namespace testing;
 TEST_F(SnakeTest, SnakeInit)
 {
     EXPECT_EQ(snake_test.get_length(), start_length);
-    const SnakeComplete& snake = snake_test.get_snake();
+    const SnakeVec& snake = snake_test.get_snake();
     EXPECT_EQ(snake.size(), 10);
     Position position = start_position;
 
@@ -54,7 +54,7 @@ TEST_F(SnakeTest, SnakeInit)
 TEST_F(SnakeTest, SnakeMoveStraight)
 {
     snake_test.move();
-    const SnakeComplete& snake = snake_test.get_snake();
+    const SnakeVec& snake = snake_test.get_snake();
     Position position = start_position;
     ++position.second;
     for (UShort i = 0; i < start_length; ++i)
@@ -74,7 +74,7 @@ TEST_F(SnakeTest, SnakeMoveCurve)
     Position position = start_position;
 
     snake_test.set_front_direction(constants::Direction::UP);
-    const SnakeComplete& snake = snake_test.get_snake();
+    const SnakeVec& snake = snake_test.get_snake();
 
     EXPECT_EQ(snake.front().direction, constants::Direction::UP);
     EXPECT_EQ(snake[0].position, start_position);
@@ -104,7 +104,7 @@ TEST_F(SnakeTest, SnakeAddPart)
     const UShort& new_length = snake_test.get_length();
     EXPECT_EQ(new_length, start_length + 1);
 
-    const SnakeComplete& snake = snake_test.get_snake();
+    const SnakeVec& snake = snake_test.get_snake();
 
     EXPECT_EQ(snake[new_length-1].direction, start_direction);
 
@@ -112,4 +112,19 @@ TEST_F(SnakeTest, SnakeAddPart)
     prev_position.second -= new_length - 1;
 
     EXPECT_EQ(snake[new_length-1].position, prev_position);
+}
+
+/**
+ * Tests if the Snake::is_occupied
+ * returns false if a snake part is occupying the positon
+ * and true if the position is free.
+ */
+TEST_F(SnakeTest, SnakeIsOccupied)
+{
+    Position position = start_position;
+
+    EXPECT_EQ(snake_test.is_occupied(position), true);
+
+    position.first = 0;
+    EXPECT_EQ(snake_test.is_occupied(position), false);
 }
