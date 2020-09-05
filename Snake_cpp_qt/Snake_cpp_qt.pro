@@ -11,6 +11,7 @@ CONFIG += c++11
 include(../defaults.pri)
 
 SOURCES += \
+    helper/helper.cpp \
     main.cpp \
     gamewindow.cpp \
     model/snake.cpp
@@ -18,6 +19,7 @@ SOURCES += \
 HEADERS += \
     constants/constants.h \
     gamewindow.h \
+    helper/helper.h \
     model/snake.h
 
 FORMS += \
