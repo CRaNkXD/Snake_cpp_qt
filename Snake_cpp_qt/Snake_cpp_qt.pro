@@ -20,6 +20,7 @@ HEADERS += \
     constants/constants.h \
     gamewindow.h \
     helper/helper.h \
+    model/food.h \
     model/snake.h
 
 FORMS += \
