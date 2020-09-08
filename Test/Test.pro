@@ -11,10 +11,14 @@ CONFIG += thread
 CONFIG -= qt
 
 HEADERS += \
-        tst_snakemove.h \
         ../Snake_cpp_qt/constants/constants.h \
-        ../Snake_cpp_qt/model/snake.h
+        ../Snake_cpp_qt/model/snake.h \
+        ../Snake_cpp_qt/model/food.h \
+        ../Snake_cpp_qt/helper/helper.h \
+        tst_helper.h \
+        tst_snake.h
 
 SOURCES += \
         main.cpp \
-        ../Snake_cpp_qt/model/snake.cpp
+        ../Snake_cpp_qt/model/snake.cpp \
+        ../Snake_cpp_qt/helper/helper.cpp

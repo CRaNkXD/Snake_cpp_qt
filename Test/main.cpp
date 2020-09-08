@@ -1,4 +1,5 @@
-#include "tst_snakemove.h"
+#include "tst_snake.h"
+#include "tst_helper.h"
 
 #include <gtest/gtest.h>
 
