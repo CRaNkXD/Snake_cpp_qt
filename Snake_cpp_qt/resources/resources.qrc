@@ -14,5 +14,7 @@
         <file>snake_body_curve_DOWN_RIGHT.png</file>
         <file>snake_body_curve_UP_LEFT.png</file>
         <file>snake_body_curve_UP_RIGHT.png</file>
+        <file>food.png</file>
+        <file>empty_field.png</file>
     </qresource>
 </RCC>
