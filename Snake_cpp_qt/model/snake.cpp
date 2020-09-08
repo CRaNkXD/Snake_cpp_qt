@@ -1,4 +1,6 @@
 #include "snake.h"
+
+#include <limits>
 #include "constants/constants.h"
 
 Snake::Snake() :
@@ -51,28 +53,45 @@ const UShort& Snake::get_length() const
 
 void Snake::move()
 {
-    for (auto it_snake = this->m_snake.begin();
-         it_snake != this->m_snake.begin() + this->m_length;
+    for (auto it_snake = this->m_snake.rend() - this->m_length;
+         it_snake != this->m_snake.rend();
          ++it_snake)
     {
-        switch (it_snake->direction)
+        if (it_snake == this->m_snake.rend() - 1)
         {
-        case constants::Direction::UP:
-            --it_snake->position.first;
-            break;
-        case constants::Direction::DOWN:
-            ++it_snake->position.first;
-            break;
-        case constants::Direction::LEFT:
-            --it_snake->position.second;
-            break;
-        case constants::Direction::RIGHT:
-            ++it_snake->position.second;
-            break;
+            switch (it_snake->direction)
+            {
+            case constants::Direction::UP:
+                if (it_snake->position.first == std::numeric_limits<UShort>::min())
+                {
+                    it_snake->position.first = std::numeric_limits<UShort>::max();
+                }
+                else
+                {
+                    --it_snake->position.first;
+                }
+                break;
+            case constants::Direction::DOWN:
+                ++it_snake->position.first;
+                break;
+            case constants::Direction::LEFT:
+                if (it_snake->position.second == std::numeric_limits<UShort>::min())
+                {
+                    it_snake->position.second = std::numeric_limits<UShort>::max();
+                }
+                else
+                {
+                    --it_snake->position.second;
+                }
+                break;
+            case constants::Direction::RIGHT:
+                ++it_snake->position.second;
+                break;
+            }
         }
-        if (it_snake != this->m_snake.begin())
+        else
         {
-            it_snake->direction = std::prev(it_snake)->direction;
+            *it_snake = *std::next(it_snake);
         }
     }
 }
@@ -104,14 +123,14 @@ void Snake::set_front_direction(const constants::Direction &direction)
     this->m_snake.front().direction = direction;
 }
 
+const constants::Direction& Snake::get_front_direction() const
+{
+    return this->m_snake.front().direction;
+}
+
 bool Snake::is_occupied(Position position) const
 {
-    for (const auto &snake_part : this->m_snake)
-    {
-        if(snake_part.position == position)
-        {
-            return true;
-        }
-    }
-    return false;
+    return this->m_snake.begin() + this->m_length != std::find_if(this->m_snake.begin(), this->m_snake.begin() + this->m_length, [&](const SnakePart &snake){
+        return snake.position == position;
+    });
 }

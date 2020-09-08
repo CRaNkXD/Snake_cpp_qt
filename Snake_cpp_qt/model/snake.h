@@ -27,5 +27,6 @@ public:
     void move();
     void add_part();
     void set_front_direction(const constants::Direction& direction);
+    const constants::Direction& get_front_direction() const;
     bool is_occupied(Position position) const;
 };
