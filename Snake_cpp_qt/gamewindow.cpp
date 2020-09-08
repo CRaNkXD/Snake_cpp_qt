@@ -24,7 +24,7 @@ GameWindow::GameWindow(QWidget *parent, const UShort &size_x, const UShort &size
 {
     ui->setupUi(this);
     this->m_game_timer = new QTimer(this);
-    this->m_exit_menu = ui->actionExit_3;
+    this->m_exit_menu = ui->actionExit_2;
     this->m_start_button = ui->btn_start;
     this->m_points_label = ui->label_points;
     this->display_points();

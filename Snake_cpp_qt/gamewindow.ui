@@ -27,10 +27,7 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <property name="styleSheet">
-    <string notr="true">QWidget
-{
-	Background-color:white
-}</string>
+    <string notr="true"/>
    </property>
    <layout class="QGridLayout" name="gridLayout_2">
     <item row="0" column="0">
@@ -303,9 +300,6 @@
           </property>
           <property name="text">
            <string/>
-          </property>
-          <property name="pixmap">
-           <pixmap resource="resources/resources.qrc">:/pics/snake/snake_head_UP.png</pixmap>
           </property>
           <property name="scaledContents">
            <bool>true</bool>
@@ -1269,9 +1263,6 @@
           <property name="text">
            <string/>
           </property>
-          <property name="pixmap">
-           <pixmap resource="resources/resources.qrc">:/pics/snake/snake_body_horizontal.png</pixmap>
-          </property>
           <property name="scaledContents">
            <bool>true</bool>
           </property>
@@ -1394,9 +1385,6 @@
           </property>
           <property name="text">
            <string/>
-          </property>
-          <property name="pixmap">
-           <pixmap resource="resources/resources.qrc">:/pics/snake/snake_body_curve_UP_RIGHT.png</pixmap>
           </property>
           <property name="scaledContents">
            <bool>true</bool>
@@ -7367,9 +7355,6 @@
           <property name="text">
            <string/>
           </property>
-          <property name="pixmap">
-           <pixmap resource="resources/resources.qrc">:/pics/snake/snake_tail_LEFT.png</pixmap>
-          </property>
           <property name="scaledContents">
            <bool>true</bool>
           </property>
@@ -7820,8 +7805,6 @@
    </property>
   </action>
  </widget>
- <resources>
-  <include location="resources/resources.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>
