@@ -4,6 +4,7 @@ A snake game written in c++ using Qt.
 ## First prototype is out :-)
 You can controll the snake with W, A, S, D.
 Start the game by pressing "Start".
+
 ![Alt text](screenshots/snake_in_game.PNG?raw=true "In game")
 
 ## Under construction ...
