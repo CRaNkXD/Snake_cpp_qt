@@ -13,7 +13,7 @@ This project is under construction ...
 ## Tests
 This project uses google test for unit testing.
 
-#To be implented
+## To be implented
 * Settings
 * Highscore list
 * Gui tests
