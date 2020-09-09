@@ -17,6 +17,7 @@ GameWindow::GameWindow(QWidget *parent, const UShort &size_x, const UShort &size
     , m_start_position(this->m_size_x / 2, this->m_size_y / 2)
     , m_snake(this->m_start_position, constants::Direction::RIGHT,
               4, this->m_size_x * this->m_size_y + 1)
+    , m_food(rand_position(this->m_size_x - 1, this->m_size_y - 1), 100)
     , m_in_game(false)
     , m_game_updated(true)
     , m_won(false)
@@ -28,9 +29,6 @@ GameWindow::GameWindow(QWidget *parent, const UShort &size_x, const UShort &size
     this->m_start_button = ui->btn_start;
     this->m_points_label = ui->label_points;
     this->display_points();
-
-    // init food with eaten so that the first food will be generated
-    this->m_food.eaten = true;
 
     for (UShort i = 0; i < this->m_size_x; ++i)
     {
@@ -75,7 +73,7 @@ void GameWindow::reset_game()
 {
     this->m_in_game = false;
     this->m_game_updated = false;
-    this->m_food.eaten = true;
+    this->m_food.set_eaten(true);
     this->m_game_timer->stop();
     for (UShort i = 0; i < this->m_size_x; ++i)
     {
@@ -98,52 +96,52 @@ void GameWindow::display_game_state()
     {
         if (it_snake == snake_vec.begin())
         {
-            switch (it_snake->direction)
+            switch (it_snake->get_direction())
             {
                 case constants::Direction::UP:
                 {
-                    this->m_playing_field[it_snake->position.first][it_snake->position.second]->setPixmap(QPixmap(this->m_snake_head_UP_icon_path));
+                    this->m_playing_field[it_snake->get_position().first][it_snake->get_position().second]->setPixmap(QPixmap(this->m_snake_head_UP_icon_path));
                     break;
                 }
                 case constants::Direction::DOWN:
                 {
-                    this->m_playing_field[it_snake->position.first][it_snake->position.second]->setPixmap(QPixmap(this->m_snake_head_DOWN_icon_path));
+                    this->m_playing_field[it_snake->get_position().first][it_snake->get_position().second]->setPixmap(QPixmap(this->m_snake_head_DOWN_icon_path));
                     break;
                 }
                 case constants::Direction::LEFT:
                 {
-                    this->m_playing_field[it_snake->position.first][it_snake->position.second]->setPixmap(QPixmap(this->m_snake_head_LEFT_icon_path));
+                    this->m_playing_field[it_snake->get_position().first][it_snake->get_position().second]->setPixmap(QPixmap(this->m_snake_head_LEFT_icon_path));
                     break;
                 }
                 case constants::Direction::RIGHT:
                 {
-                    this->m_playing_field[it_snake->position.first][it_snake->position.second]->setPixmap(QPixmap(this->m_snake_head_RIGHT_icon_path));
+                    this->m_playing_field[it_snake->get_position().first][it_snake->get_position().second]->setPixmap(QPixmap(this->m_snake_head_RIGHT_icon_path));
                     break;
                 }
             }
         }
         else if (it_snake == snake_vec.begin() + this->m_snake.get_length() - 2)
         {
-            switch (it_snake->direction)
+            switch (it_snake->get_direction())
             {
                 case constants::Direction::UP:
                 {
-                    this->m_playing_field[it_snake->position.first][it_snake->position.second]->setPixmap(QPixmap(this->m_snake_tail_UP_icon_path));
+                    this->m_playing_field[it_snake->get_position().first][it_snake->get_position().second]->setPixmap(QPixmap(this->m_snake_tail_UP_icon_path));
                     break;
                 }
                 case constants::Direction::DOWN:
                 {
-                    this->m_playing_field[it_snake->position.first][it_snake->position.second]->setPixmap(QPixmap(this->m_snake_tail_DOWN_icon_path));
+                    this->m_playing_field[it_snake->get_position().first][it_snake->get_position().second]->setPixmap(QPixmap(this->m_snake_tail_DOWN_icon_path));
                     break;
                 }
                 case constants::Direction::LEFT:
                 {
-                    this->m_playing_field[it_snake->position.first][it_snake->position.second]->setPixmap(QPixmap(this->m_snake_tail_LEFT_icon_path));
+                    this->m_playing_field[it_snake->get_position().first][it_snake->get_position().second]->setPixmap(QPixmap(this->m_snake_tail_LEFT_icon_path));
                     break;
                 }
                 case constants::Direction::RIGHT:
                 {
-                    this->m_playing_field[it_snake->position.first][it_snake->position.second]->setPixmap(QPixmap(this->m_snake_tail_RIGHT_icon_path));
+                    this->m_playing_field[it_snake->get_position().first][it_snake->get_position().second]->setPixmap(QPixmap(this->m_snake_tail_RIGHT_icon_path));
                     break;
                 }
             }
@@ -151,100 +149,100 @@ void GameWindow::display_game_state()
         // the last part is used to clean up the path behind the snake
         else if (it_snake == snake_vec.begin() + this->m_snake.get_length() - 1)
         {
-            switch (it_snake->direction)
+            switch (it_snake->get_direction())
             {
                 case constants::Direction::UP:
                 {
-                    this->m_playing_field[it_snake->position.first][it_snake->position.second]->setPixmap(QPixmap(this->m_empty_field_icon_path));
+                    this->m_playing_field[it_snake->get_position().first][it_snake->get_position().second]->setPixmap(QPixmap(this->m_empty_field_icon_path));
                     break;
                 }
                 case constants::Direction::DOWN:
                 {
-                    this->m_playing_field[it_snake->position.first][it_snake->position.second]->setPixmap(QPixmap(this->m_empty_field_icon_path));
+                    this->m_playing_field[it_snake->get_position().first][it_snake->get_position().second]->setPixmap(QPixmap(this->m_empty_field_icon_path));
                     break;
                 }
                 case constants::Direction::LEFT:
                 {
-                    this->m_playing_field[it_snake->position.first][it_snake->position.second]->setPixmap(QPixmap(this->m_empty_field_icon_path));
+                    this->m_playing_field[it_snake->get_position().first][it_snake->get_position().second]->setPixmap(QPixmap(this->m_empty_field_icon_path));
                     break;
                 }
                 case constants::Direction::RIGHT:
                 {
-                    this->m_playing_field[it_snake->position.first][it_snake->position.second]->setPixmap(QPixmap(this->m_empty_field_icon_path));
+                    this->m_playing_field[it_snake->get_position().first][it_snake->get_position().second]->setPixmap(QPixmap(this->m_empty_field_icon_path));
                     break;
                 }
             }
         }
-        else if (it_snake->direction != std::next(it_snake)->direction)
+        else if (it_snake->get_direction() != std::next(it_snake)->get_direction())
         {
             // TODO: consider renaming the curve pics
-            if (it_snake->direction == constants::Direction::UP)
+            if (it_snake->get_direction() == constants::Direction::UP)
             {
-                if (std::next(it_snake)->direction == constants::Direction::RIGHT)
+                if (std::next(it_snake)->get_direction() == constants::Direction::RIGHT)
                 {
-                    this->m_playing_field[it_snake->position.first][it_snake->position.second]->setPixmap(QPixmap(this->m_snake_body_curve_UP_LEFT_icon_path));
+                    this->m_playing_field[it_snake->get_position().first][it_snake->get_position().second]->setPixmap(QPixmap(this->m_snake_body_curve_UP_LEFT_icon_path));
                 }
                 else
                 {
-                    this->m_playing_field[it_snake->position.first][it_snake->position.second]->setPixmap(QPixmap(this->m_snake_body_curve_UP_RIGHT_icon_path));
+                    this->m_playing_field[it_snake->get_position().first][it_snake->get_position().second]->setPixmap(QPixmap(this->m_snake_body_curve_UP_RIGHT_icon_path));
                 }
             }
-            else if (it_snake->direction == constants::Direction::DOWN)
+            else if (it_snake->get_direction() == constants::Direction::DOWN)
             {
-                if (std::next(it_snake)->direction == constants::Direction::RIGHT)
+                if (std::next(it_snake)->get_direction() == constants::Direction::RIGHT)
                 {
-                    this->m_playing_field[it_snake->position.first][it_snake->position.second]->setPixmap(QPixmap(this->m_snake_body_curve_DOWN_LEFT_icon_path));
+                    this->m_playing_field[it_snake->get_position().first][it_snake->get_position().second]->setPixmap(QPixmap(this->m_snake_body_curve_DOWN_LEFT_icon_path));
                 }
                 else
                 {
-                    this->m_playing_field[it_snake->position.first][it_snake->position.second]->setPixmap(QPixmap(this->m_snake_body_curve_DOWN_RIGHT_icon_path));
+                    this->m_playing_field[it_snake->get_position().first][it_snake->get_position().second]->setPixmap(QPixmap(this->m_snake_body_curve_DOWN_RIGHT_icon_path));
                 }
             }
-            else if (it_snake->direction == constants::Direction::LEFT)
+            else if (it_snake->get_direction() == constants::Direction::LEFT)
             {
-                if (std::next(it_snake)->direction == constants::Direction::UP)
+                if (std::next(it_snake)->get_direction() == constants::Direction::UP)
                 {
-                    this->m_playing_field[it_snake->position.first][it_snake->position.second]->setPixmap(QPixmap(this->m_snake_body_curve_DOWN_LEFT_icon_path));
+                    this->m_playing_field[it_snake->get_position().first][it_snake->get_position().second]->setPixmap(QPixmap(this->m_snake_body_curve_DOWN_LEFT_icon_path));
                 }
                 else
                 {
-                    this->m_playing_field[it_snake->position.first][it_snake->position.second]->setPixmap(QPixmap(this->m_snake_body_curve_UP_LEFT_icon_path));
+                    this->m_playing_field[it_snake->get_position().first][it_snake->get_position().second]->setPixmap(QPixmap(this->m_snake_body_curve_UP_LEFT_icon_path));
                 }
             }
-            else if (it_snake->direction == constants::Direction::RIGHT)
+            else if (it_snake->get_direction() == constants::Direction::RIGHT)
             {
-                if (std::next(it_snake)->direction == constants::Direction::UP)
+                if (std::next(it_snake)->get_direction() == constants::Direction::UP)
                 {
-                    this->m_playing_field[it_snake->position.first][it_snake->position.second]->setPixmap(QPixmap(this->m_snake_body_curve_DOWN_RIGHT_icon_path));
+                    this->m_playing_field[it_snake->get_position().first][it_snake->get_position().second]->setPixmap(QPixmap(this->m_snake_body_curve_DOWN_RIGHT_icon_path));
                 }
                 else
                 {
-                    this->m_playing_field[it_snake->position.first][it_snake->position.second]->setPixmap(QPixmap(this->m_snake_body_curve_UP_RIGHT_icon_path));
+                    this->m_playing_field[it_snake->get_position().first][it_snake->get_position().second]->setPixmap(QPixmap(this->m_snake_body_curve_UP_RIGHT_icon_path));
                 }
             }
         }
-        else if (it_snake->direction == std::next(it_snake)->direction)
+        else if (it_snake->get_direction() == std::next(it_snake)->get_direction())
         {
-            switch (it_snake->direction)
+            switch (it_snake->get_direction())
             {
                 case constants::Direction::UP:
                 {
-                    this->m_playing_field[it_snake->position.first][it_snake->position.second]->setPixmap(QPixmap(this->m_snake_body_vertical_icon_path));
+                    this->m_playing_field[it_snake->get_position().first][it_snake->get_position().second]->setPixmap(QPixmap(this->m_snake_body_vertical_icon_path));
                     break;
                 }
                 case constants::Direction::DOWN:
                 {
-                    this->m_playing_field[it_snake->position.first][it_snake->position.second]->setPixmap(QPixmap(this->m_snake_body_vertical_icon_path));
+                    this->m_playing_field[it_snake->get_position().first][it_snake->get_position().second]->setPixmap(QPixmap(this->m_snake_body_vertical_icon_path));
                     break;
                 }
                 case constants::Direction::LEFT:
                 {
-                    this->m_playing_field[it_snake->position.first][it_snake->position.second]->setPixmap(QPixmap(this->m_snake_body_horizontal_icon_path));
+                    this->m_playing_field[it_snake->get_position().first][it_snake->get_position().second]->setPixmap(QPixmap(this->m_snake_body_horizontal_icon_path));
                     break;
                 }
                 case constants::Direction::RIGHT:
                 {
-                    this->m_playing_field[it_snake->position.first][it_snake->position.second]->setPixmap(QPixmap(this->m_snake_body_horizontal_icon_path));
+                    this->m_playing_field[it_snake->get_position().first][it_snake->get_position().second]->setPixmap(QPixmap(this->m_snake_body_horizontal_icon_path));
                     break;
                 }
             }
@@ -266,9 +264,9 @@ void GameWindow::update_game_state()
         if (snake_ate_food(this->m_snake, this->m_food))
         {
             this->m_snake.add_part();
-            this->add_points(this->m_food.points);
+            this->add_points(this->m_food.get_points());
             this->display_points();
-            this->m_food.eaten = true;
+            this->m_food.set_eaten(true);
             if (this->m_snake.get_length() == this->m_size_x * this->m_size_y)
             {
                 this->m_won = true;
@@ -277,14 +275,14 @@ void GameWindow::update_game_state()
 
         if (!this->m_won)
         {
-            if (this->m_food.eaten)
+            if (this->m_food.is_eaten())
             {
                 do{
-                    this->m_food.position = rand_position(this->m_size_x - 1, this->m_size_y - 1);
-                } while(this->m_snake.is_occupied(this->m_food.position));
-                this->m_food.eaten = false;
+                    this->m_food.set_position(rand_position(this->m_size_x - 1, this->m_size_y - 1));
+                } while(this->m_snake.is_occupied(this->m_food.get_position()));
+                this->m_food.set_eaten(false);
             }
-            this->m_playing_field[this->m_food.position.first][this->m_food.position.second]->setPixmap(QPixmap(this->m_food_icon_path));
+            this->m_playing_field[this->m_food.get_position().first][this->m_food.get_position().second]->setPixmap(QPixmap(this->m_food_icon_path));
 
             this->display_game_state();
             this->m_game_updated = true;

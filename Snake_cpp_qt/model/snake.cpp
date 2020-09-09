@@ -3,17 +3,47 @@
 #include <limits>
 #include "constants/constants.h"
 
-Snake::Snake() :
-m_snake(10), m_length(1)
-{
+SnakePart::SnakePart()
+    : m_position{Position(0,0)}
+    , m_direction{constants::Direction::RIGHT}
+{}
 
+SnakePart::SnakePart(const Position &position, const constants::Direction &direction)
+    : m_position(position)
+    , m_direction(direction)
+{}
+
+const constants::Direction& SnakePart::get_direction() const
+{
+    return this->m_direction;
 }
 
-Snake::Snake(const Position& start_position, const constants::Direction& start_direction, const UShort& start_length, const UShort& max_length) :
-    m_snake(max_length), m_length(start_length)
+const Position& SnakePart::get_position() const
 {
-    this->m_snake.front().position = start_position;
-    this->m_snake.front().direction = start_direction;
+    return this->m_position;
+}
+
+void SnakePart::set_direction(const constants::Direction &direction)
+{
+    this->m_direction = direction;
+}
+
+void SnakePart::set_position(const Position &position)
+{
+    this->m_position = position;
+}
+
+Snake::Snake()
+    : m_snake(1)
+    , m_length(1)
+{}
+
+Snake::Snake(const Position& start_position, const constants::Direction& start_direction, const UShort& start_length, const UShort& max_length)
+    : m_snake(max_length)
+    , m_length{start_length}
+{
+    this->m_snake.front().m_position = start_position;
+    this->m_snake.front().m_direction = start_direction;
 
     Position next_position{start_position};
 
@@ -36,8 +66,8 @@ Snake::Snake(const Position& start_position, const constants::Direction& start_d
             --next_position.second;
             break;
         }
-        it_snake->position = next_position;
-        it_snake->direction = start_direction;
+        it_snake->m_position = next_position;
+        it_snake->m_direction = start_direction;
     }
 }
 
@@ -59,33 +89,33 @@ void Snake::move()
     {
         if (it_snake == this->m_snake.rend() - 1)
         {
-            switch (it_snake->direction)
+            switch (it_snake->m_direction)
             {
             case constants::Direction::UP:
-                if (it_snake->position.first == std::numeric_limits<UShort>::min())
+                if (it_snake->m_position.first == std::numeric_limits<UShort>::min())
                 {
-                    it_snake->position.first = std::numeric_limits<UShort>::max();
+                    it_snake->m_position.first = std::numeric_limits<UShort>::max();
                 }
                 else
                 {
-                    --it_snake->position.first;
+                    --it_snake->m_position.first;
                 }
                 break;
             case constants::Direction::DOWN:
-                ++it_snake->position.first;
+                ++it_snake->m_position.first;
                 break;
             case constants::Direction::LEFT:
-                if (it_snake->position.second == std::numeric_limits<UShort>::min())
+                if (it_snake->m_position.second == std::numeric_limits<UShort>::min())
                 {
-                    it_snake->position.second = std::numeric_limits<UShort>::max();
+                    it_snake->m_position.second = std::numeric_limits<UShort>::max();
                 }
                 else
                 {
-                    --it_snake->position.second;
+                    --it_snake->m_position.second;
                 }
                 break;
             case constants::Direction::RIGHT:
-                ++it_snake->position.second;
+                ++it_snake->m_position.second;
                 break;
             }
         }
@@ -100,19 +130,19 @@ void Snake::add_part()
 {
     this->m_snake[m_length] = this->m_snake[m_length-1];
 
-    switch (this->m_snake[m_length].direction)
+    switch (this->m_snake[m_length].m_direction)
     {
     case constants::Direction::UP:
-        ++this->m_snake[m_length].position.first;
+        ++this->m_snake[m_length].m_position.first;
         break;
     case constants::Direction::DOWN:
-        --this->m_snake[m_length].position.first;
+        --this->m_snake[m_length].m_position.first;
         break;
     case constants::Direction::LEFT:
-        ++this->m_snake[m_length].position.second;
+        ++this->m_snake[m_length].m_position.second;
         break;
     case constants::Direction::RIGHT:
-        --this->m_snake[m_length].position.second;
+        --this->m_snake[m_length].m_position.second;
         break;
     }
     ++this->m_length;
@@ -120,17 +150,17 @@ void Snake::add_part()
 
 void Snake::set_front_direction(const constants::Direction &direction)
 {
-    this->m_snake.front().direction = direction;
+    this->m_snake.front().m_direction = direction;
 }
 
 const constants::Direction& Snake::get_front_direction() const
 {
-    return this->m_snake.front().direction;
+    return this->m_snake.front().m_direction;
 }
 
 bool Snake::is_occupied(Position position) const
 {
     return this->m_snake.begin() + this->m_length != std::find_if(this->m_snake.begin(), this->m_snake.begin() + this->m_length, [&](const SnakePart &snake){
-        return snake.position == position;
+        return snake.m_position == position;
     });
 }

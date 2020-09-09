@@ -21,4 +21,5 @@ HEADERS += \
 SOURCES += \
         main.cpp \
         ../Snake_cpp_qt/model/snake.cpp \
+        ../Snake_cpp_qt/model/food.cpp \
         ../Snake_cpp_qt/helper/helper.cpp

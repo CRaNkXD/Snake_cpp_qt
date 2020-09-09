@@ -7,10 +7,23 @@
 
 typedef unsigned short UShort ;
 typedef std::pair<UShort, UShort> Position;
-struct SnakePart{
-   Position position;
-   constants::Direction direction;
+
+class SnakePart{
+private:
+   Position m_position;
+   constants::Direction m_direction;
+
+public:
+   SnakePart();
+   SnakePart(const Position &position, const constants::Direction &direction);
+   const constants::Direction& get_direction() const;
+   void set_direction(const constants::Direction &direction);
+   const Position& get_position() const;
+   void set_position(const Position &position);
+
+   friend class Snake;
 };
+
 typedef std::vector<SnakePart> SnakeVec;
 
 class Snake

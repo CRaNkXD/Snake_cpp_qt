@@ -53,12 +53,12 @@ TEST(HelperTest, SnakeHitSnake)
 TEST(HelperTest, SnakeAteFood)
 {
     Position position{ 1, 1 };
-    Food food;
-    food.position = position;
+    Food food(position, 100);
     Snake snake{position, constants::Direction::DOWN , 1, 10};
 
     EXPECT_EQ(snake_ate_food(snake, food), true);
 
-    food.position.first = 0;
+    position.first = 0;
+    food.set_position(position);
     EXPECT_EQ(snake_ate_food(snake, food), false);
 }

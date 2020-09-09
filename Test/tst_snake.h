@@ -37,12 +37,12 @@ TEST_F(SnakeTest, SnakeInit)
     Position position = start_position;
 
     Position empty{ 0,0 };
-    EXPECT_EQ(snake[3].position, empty);
+    EXPECT_EQ(snake[3].get_position(), empty);
 
     for (UShort i = 0; i < start_length; ++i)
     {
-        EXPECT_EQ(snake[i].direction, start_direction);
-        EXPECT_EQ(snake[i].position, position);
+        EXPECT_EQ(snake[i].get_direction(), start_direction);
+        EXPECT_EQ(snake[i].get_position(), position);
         --position.second;
     }
 }
@@ -59,8 +59,8 @@ TEST_F(SnakeTest, SnakeMoveStraight)
     ++position.second;
     for (UShort i = 0; i < start_length; ++i)
     {
-        EXPECT_EQ(snake[i].direction, start_direction);
-        EXPECT_EQ(snake[i].position, position);
+        EXPECT_EQ(snake[i].get_direction(), start_direction);
+        EXPECT_EQ(snake[i].get_position(), position);
         --position.second;
     }
 }
@@ -76,19 +76,19 @@ TEST_F(SnakeTest, SnakeMoveCurve)
     snake_test.set_front_direction(constants::Direction::UP);
     const SnakeVec& snake = snake_test.get_snake();
 
-    EXPECT_EQ(snake.front().direction, constants::Direction::UP);
-    EXPECT_EQ(snake[0].position, start_position);
+    EXPECT_EQ(snake.front().get_direction(), constants::Direction::UP);
+    EXPECT_EQ(snake[0].get_position(), start_position);
 
     snake_test.move();
 
     --position.first;
-    EXPECT_EQ(snake[0].position, position);
+    EXPECT_EQ(snake[0].get_position(), position);
 
-    EXPECT_EQ(snake[1].position, start_position);
+    EXPECT_EQ(snake[1].get_position(), start_position);
 
     position = start_position;
     --position.second;
-    EXPECT_EQ(snake[2].position, position);
+    EXPECT_EQ(snake[2].get_position(), position);
 
 }
 
@@ -106,12 +106,12 @@ TEST_F(SnakeTest, SnakeAddPart)
 
     const SnakeVec& snake = snake_test.get_snake();
 
-    EXPECT_EQ(snake[new_length-1].direction, start_direction);
+    EXPECT_EQ(snake[new_length-1].get_direction(), start_direction);
 
     Position prev_position = start_position;
     prev_position.second -= new_length - 1;
 
-    EXPECT_EQ(snake[new_length-1].position, prev_position);
+    EXPECT_EQ(snake[new_length-1].get_position(), prev_position);
 }
 
 /**

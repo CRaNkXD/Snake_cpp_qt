@@ -14,6 +14,7 @@ SOURCES += \
     helper/helper.cpp \
     main.cpp \
     gamewindow.cpp \
+    model/food.cpp \
     model/snake.cpp
 
 HEADERS += \
