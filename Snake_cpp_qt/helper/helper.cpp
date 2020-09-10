@@ -33,7 +33,8 @@ bool snake_hit_snake(const Snake &snake)
 {
     SnakeVec snake_vec = snake.get_snake();
 
-    return snake_vec.begin() + snake.get_length() != std::find_if(snake_vec.begin() + 1, snake_vec.begin() + snake.get_length(),
+    // the last element is jus for clean up and not part of the actual snake. This is why we have to search up to length - 1
+    return snake_vec.begin() + snake.get_length() - 1 != std::find_if(snake_vec.begin() + 1, snake_vec.begin() + snake.get_length() - 1,
         [&](const SnakePart& snake_part){
         return snake_part.get_position() == snake_vec.front().get_position();
     });
