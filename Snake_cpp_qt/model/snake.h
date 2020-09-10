@@ -10,18 +10,19 @@ typedef std::pair<UShort, UShort> Position;
 
 class SnakePart{
 private:
-   Position m_position;
-   constants::Direction m_direction;
+    Position m_position;
+    constants::Direction m_direction;
+    bool is_new{false};
 
 public:
-   SnakePart();
-   SnakePart(const Position &position, const constants::Direction &direction);
-   const constants::Direction& get_direction() const;
-   void set_direction(const constants::Direction &direction);
-   const Position& get_position() const;
-   void set_position(const Position &position);
+    SnakePart();
+    SnakePart(const Position &position, const constants::Direction &direction);
+    const constants::Direction& get_direction() const;
+    void set_direction(const constants::Direction &direction);
+    const Position& get_position() const;
+    void set_position(const Position &position);
 
-   friend class Snake;
+    friend class Snake;
 };
 
 typedef std::vector<SnakePart> SnakeVec;

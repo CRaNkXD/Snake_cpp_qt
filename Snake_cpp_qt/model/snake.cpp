@@ -47,7 +47,7 @@ Snake::Snake(const Position& start_position, const constants::Direction& start_d
 
     Position next_position{start_position};
 
-    for (auto it_snake = this->m_snake.begin()+1;
+    for (auto it_snake = this->m_snake.begin() + 1;
          it_snake != this->m_snake.begin() + this->m_length;
          ++it_snake)
     {
@@ -119,6 +119,12 @@ void Snake::move()
                 break;
             }
         }
+        else if (it_snake->is_new)
+        {
+            // do not move the new item because it is iniitally located
+            // on the same position as previous last item
+            it_snake->is_new = false;
+        }
         else
         {
             *it_snake = *std::next(it_snake);
@@ -128,23 +134,8 @@ void Snake::move()
 
 void Snake::add_part()
 {
-    this->m_snake[m_length] = this->m_snake[m_length-1];
-
-    switch (this->m_snake[m_length].m_direction)
-    {
-    case constants::Direction::UP:
-        ++this->m_snake[m_length].m_position.first;
-        break;
-    case constants::Direction::DOWN:
-        --this->m_snake[m_length].m_position.first;
-        break;
-    case constants::Direction::LEFT:
-        ++this->m_snake[m_length].m_position.second;
-        break;
-    case constants::Direction::RIGHT:
-        --this->m_snake[m_length].m_position.second;
-        break;
-    }
+    this->m_snake[m_length] = this->m_snake[m_length - 1];
+    this->m_snake[m_length].is_new = true;
     ++this->m_length;
 }
 
