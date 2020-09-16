@@ -35,7 +35,7 @@ TEST(HelperTest, SnakeHitWall)
 TEST(HelperTest, SnakeHitSnake)
 {
     Position position{ 5, 5 };
-    Snake snake{position, constants::Direction::RIGHT , 5, 100};
+    Snake snake{position, constants::Direction::RIGHT , 6, 100};
 
     EXPECT_EQ(snake_hit_snake(snake), false);
 

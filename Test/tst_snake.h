@@ -108,10 +108,13 @@ TEST_F(SnakeTest, SnakeAddPart)
 
     EXPECT_EQ(snake[new_length-1].get_direction(), start_direction);
 
-    Position prev_position = start_position;
-    prev_position.second -= new_length - 1;
+    EXPECT_EQ(snake[new_length-1].get_position(), snake[new_length-2].get_position());
 
-    EXPECT_EQ(snake[new_length-1].get_position(), prev_position);
+    snake_test.move();
+    Position prev_pos = snake[new_length-2].get_position();
+
+    EXPECT_EQ(snake[new_length-1].get_position().second, prev_pos.second - 1);
+    EXPECT_EQ(snake[new_length-1].get_position().first, prev_pos.first);
 }
 
 /**
