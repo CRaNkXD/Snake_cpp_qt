@@ -11,6 +11,8 @@ CONFIG += c++11
 include(../defaults.pri)
 
 SOURCES += \
+    gui/dialog_highscore.cpp \
+    gui/dialog_new_highscore.cpp \
     helper/helper.cpp \
     main.cpp \
     gamewindow.cpp \
@@ -20,12 +22,16 @@ SOURCES += \
 HEADERS += \
     constants/constants.h \
     gamewindow.h \
+    gui/dialog_highscore.h \
+    gui/dialog_new_highscore.h \
     helper/helper.h \
     model/food.h \
     model/snake.h
 
 FORMS += \
-    gamewindow.ui
+    gamewindow.ui \
+    gui/dialog_highscore.ui \
+    gui/dialog_new_highscore.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
