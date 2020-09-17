@@ -7,6 +7,10 @@ Start the game by pressing "Start".
 
 ![Alt text](screenshots/snake_in_game.PNG?raw=true "In game")
 
+If a new highscore is achieved you can enter your name. The highscore list is saved in a txt file.
+
+![Alt text](screenshots/new_highscore.PNG?raw=true "In game")
+
 ## Under construction ...
 This project is under construction ...
 
@@ -15,7 +19,7 @@ This project uses google test for unit testing.
 
 ## To be implented
 * Settings
-* Highscore list
+* Highscore list :heavy_check_mark:
 * Gui tests
 
 ## License
