@@ -26,6 +26,7 @@ GameWindow::GameWindow(QWidget *parent, const UShort &size_x, const UShort &size
     ui->setupUi(this);
     this->m_game_timer = new QTimer(this);
     this->m_exit_menu = ui->actionExit_2;
+    this->m_highscore_menu = ui->actionShow_Highscore;
     this->m_start_button = ui->btn_start;
     this->m_points_label = ui->label_points;
     this->display_points();
@@ -42,9 +43,10 @@ GameWindow::GameWindow(QWidget *parent, const UShort &size_x, const UShort &size
     }
 
     // Connect slots
-    connect(m_game_timer, SIGNAL(timeout()), this, SLOT(update_game_state()));
-    connect(m_start_button, SIGNAL(clicked()), this, SLOT(start_game()));
-    connect(m_exit_menu, SIGNAL (triggered()), this, SLOT (close()));
+    connect(this->m_game_timer, SIGNAL(timeout()), this, SLOT(update_game_state()));
+    connect(this->m_start_button, SIGNAL(clicked()), this, SLOT(start_game()));
+    connect(this->m_exit_menu, SIGNAL (triggered()), this, SLOT (close()));
+    connect(this->m_highscore_menu, SIGNAL (triggered()), this, SLOT (show_highscore_list()));
 }
 
 GameWindow::~GameWindow()
@@ -256,8 +258,17 @@ void GameWindow::update_game_state()
     if (snake_hit_snake(this->m_snake) ||
         snake_hit_wall(this->m_snake, this->m_size_x, this->m_size_y))
     {
+        if (is_new_highscore(this->m_points))
+        {
+            this->m_dialog_new_highscore = new DialogNewHighscore(this->m_points, this);
+            this->m_dialog_new_highscore->setAttribute(Qt::WA_DeleteOnClose);
+            this->m_dialog_new_highscore->show();
+        }
+        else
+        {
+            show_highscore_list();
+        }
         this->reset_game();
-        // TODO: show highscore list if and prompt input if a new highscore was set
     }
     else
     {
@@ -294,11 +305,6 @@ void GameWindow::update_game_state()
         }
 
     }
-}
-
-void GameWindow::show_highscore()
-{
-
 }
 
 void GameWindow::new_game()
@@ -349,4 +355,11 @@ void GameWindow::keyPressEvent(QKeyEvent *event)
 void GameWindow::show_settings()
 {
 
+}
+
+void GameWindow::show_highscore_list()
+{
+    this->m_dialog_highscore = new dialog_highscore(this);
+    this->m_dialog_highscore->setAttribute(Qt::WA_DeleteOnClose);
+    this->m_dialog_highscore->show();
 }

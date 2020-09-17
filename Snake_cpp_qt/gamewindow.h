@@ -7,6 +7,8 @@
 
 #include <vector>
 
+#include "gui/dialog_highscore.h"
+#include "gui/dialog_new_highscore.h"
 #include "model/snake.h"
 #include "model/food.h"
 
@@ -30,7 +32,10 @@ public:
 
 private:
     Ui::GameWindow *ui;
+    dialog_highscore* m_dialog_highscore;
+    DialogNewHighscore* m_dialog_new_highscore;
     QAction *m_exit_menu;
+    QAction *m_highscore_menu;
     QPushButton *m_start_button;
     QLabel *m_points_label;
     UShort m_size_x;
@@ -42,7 +47,7 @@ private:
     bool m_in_game;
     bool m_game_updated;
     bool m_won;
-    int m_points;
+    unsigned int m_points;
     QTimer *m_game_timer;
     QString m_snake_body_horizontal_icon_path = ":/pics/snake/snake_body_horizontal.png";
     QString m_snake_body_vertical_icon_path = ":/pics/snake/snake_body_vertical.png";
@@ -63,10 +68,10 @@ private:
 
 private slots:
     void start_game();
-    void show_highscore();
     void new_game();
     void keyPressEvent(QKeyEvent *event) override;
     void show_settings();
     void update_game_state();
+    void show_highscore_list();
 
 };
