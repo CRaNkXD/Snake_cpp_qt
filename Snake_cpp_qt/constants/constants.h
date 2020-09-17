@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 namespace constants {
 /**
  * Defines the directions the snake can move.
@@ -12,4 +14,5 @@ enum class Direction {
 
 };
 
+const std::string HIGHSCORE_PATH = "highscore.txt";
 }

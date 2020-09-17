@@ -1,9 +1,14 @@
 #include "helper.h"
 
+#include <sys/stat.h>
 #include <limits>
 #include <random>
 #include <cmath>
 #include <algorithm>
+#include <fstream>
+#include <sstream>
+
+#include "constants/constants.h"
 
 Position rand_position(const UShort &max_x, const UShort &max_y)
 {
@@ -44,4 +49,83 @@ bool snake_ate_food(const Snake &snake, const Food &food)
 {
     SnakeVec snake_vec = snake.get_snake();
     return snake_vec.front().get_position() == food.get_position();
+}
+
+bool file_exists(const std::string& filename)
+{
+    struct stat buf;
+    if (stat(filename.c_str(), &buf) != -1)
+    {
+        return true;
+    }
+    return false;
+}
+
+std::vector<std::pair<std::string, std::string>> get_highscore_list()
+{
+    std::vector<std::pair<std::string, std::string>> highscore_list{};
+    std::ifstream input_highscore{ constants::HIGHSCORE_PATH };
+    if (input_highscore.is_open())
+    {
+        std::string str_line;
+        while (std::getline(input_highscore, str_line))
+        {
+            std::istringstream  ss_line{ str_line };
+            std::pair<std::string, std::string> entry;
+            ss_line >> entry.first;
+            ss_line >> entry.second;
+            highscore_list.push_back(entry);
+        }
+    }
+    else
+    {
+        // raise exception
+    }
+    return highscore_list;
+}
+
+void save_highscore_list(const std::vector<std::pair<std::string, std::string>>& highscore_list)
+{
+    if(highscore_list.empty())
+    {
+        if (!file_exists(constants::HIGHSCORE_PATH))
+        {
+            std::ofstream output_highscore{ constants::HIGHSCORE_PATH };
+            output_highscore << "LoupingLoui    5000" << std::endl;
+            output_highscore << "Fritz          4000" << std::endl;
+            output_highscore << "SumseBiene     3000" << std::endl;
+            output_highscore << "KingKarl       2000" << std::endl;
+            output_highscore << "LarsLarson     1000" << std::endl;
+            output_highscore << "HasiHinterbein  500" << std::endl;
+            output_highscore << "BlinderMoench   200" << std::endl;
+            output_highscore << "LahmeEnte       100";
+            output_highscore.close();
+        }
+    }
+    else
+    {
+        std::ofstream output_highscore{ constants::HIGHSCORE_PATH, std::ios::trunc };
+        for (auto it = highscore_list.begin(); it != highscore_list.end(); ++it)
+        {
+            output_highscore << it->first << " " << it->second;
+            if (it != highscore_list.end() - 1)
+            {
+                output_highscore << std::endl;
+            }
+        }
+        output_highscore.close();
+    }
+}
+
+bool is_new_highscore(const unsigned int& points)
+{
+    std::vector<std::pair<std::string, std::string>> highscore_list;
+    highscore_list = get_highscore_list();
+    auto it = std::find_if(highscore_list.begin(),highscore_list.end(),
+                 [&](const auto& entry)
+                {
+                    return std::stoi(entry.second) <= points;
+                });
+
+    return it != highscore_list.end();
 }
