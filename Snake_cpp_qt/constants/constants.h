@@ -11,7 +11,6 @@ enum class Direction {
     DOWN,
     LEFT,
     RIGHT,
-
 };
 
 const std::string HIGHSCORE_PATH = "highscore.txt";

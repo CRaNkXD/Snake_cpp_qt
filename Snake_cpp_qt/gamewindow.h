@@ -6,6 +6,7 @@
 #include <QKeyEvent>
 
 #include <vector>
+#include <deque>
 
 #include "gui/dialog_highscore.h"
 #include "gui/dialog_new_highscore.h"
@@ -45,10 +46,10 @@ private:
     Snake m_snake;
     Food m_food;
     bool m_in_game;
-    bool m_game_updated;
     bool m_won;
     unsigned int m_points;
     QTimer *m_game_timer;
+    std::deque<constants::Direction> m_key_buffer;
     QString m_snake_body_horizontal_icon_path = ":/pics/snake/snake_body_horizontal.png";
     QString m_snake_body_vertical_icon_path = ":/pics/snake/snake_body_vertical.png";
     QString m_snake_head_UP_icon_path = ":/pics/snake/snake_head_UP.png";

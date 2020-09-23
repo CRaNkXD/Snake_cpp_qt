@@ -1,6 +1,8 @@
 #include <iostream>
 #include <algorithm>
 
+#include <QDebug>
+
 #include "gamewindow.h"
 #include "ui_gamewindow.h"
 #include "model/snake.h"
@@ -11,17 +13,17 @@
 GameWindow::GameWindow(QWidget *parent, const UShort &size_x, const UShort &size_y)
     : QMainWindow(parent)
     , ui(new Ui::GameWindow)
-    , m_size_x(size_x)
-    , m_size_y(size_y)
+    , m_size_x{size_x}
+    , m_size_y{size_y}
     , m_playing_field(m_size_x, std::vector<QLabel *>(this->m_size_y))
     , m_start_position(this->m_size_x / 2, this->m_size_y / 2)
     , m_snake(this->m_start_position, constants::Direction::RIGHT,
               4, this->m_size_x * this->m_size_y + 1)
     , m_food(rand_position(this->m_size_x - 1, this->m_size_y - 1), 100)
-    , m_in_game(false)
-    , m_game_updated(true)
-    , m_won(false)
-    , m_points(0)
+    , m_in_game{false}
+    , m_won{false}
+    , m_points{0}
+    , m_key_buffer{}
 {
     ui->setupUi(this);
     this->m_game_timer = new QTimer(this);
@@ -74,7 +76,7 @@ void GameWindow::start_game()
 void GameWindow::reset_game()
 {
     this->m_in_game = false;
-    this->m_game_updated = false;
+    this->m_key_buffer.clear();
     this->m_food.set_eaten(true);
     this->m_game_timer->stop();
     for (UShort i = 0; i < this->m_size_x; ++i)
@@ -254,6 +256,39 @@ void GameWindow::display_game_state()
 
 void GameWindow::update_game_state()
 {
+    if (!this->m_key_buffer.empty())
+    {
+        constants::Direction current_direction{this->m_snake.get_front_direction()};
+        constants::Direction next_direction{this->m_key_buffer.front()};
+        switch(next_direction)
+        {
+            case constants::Direction::UP:
+            {
+                if (current_direction != constants::Direction::DOWN)
+                    this->m_snake.set_front_direction(next_direction);
+                break;
+            }
+            case constants::Direction::LEFT:
+            {
+                if (current_direction != constants::Direction::RIGHT)
+                    this->m_snake.set_front_direction(next_direction);
+                break;
+            }
+            case constants::Direction::RIGHT:
+            {
+                if (current_direction != constants::Direction::LEFT)
+                    this->m_snake.set_front_direction(next_direction);
+                break;
+            }
+            case constants::Direction::DOWN:
+            {
+                if (current_direction != constants::Direction::UP)
+                    this->m_snake.set_front_direction(next_direction);
+                break;
+            }
+        }
+        this->m_key_buffer.pop_front();
+    }
     this->m_snake.move();
     if (snake_hit_snake(this->m_snake) ||
         snake_hit_wall(this->m_snake, this->m_size_x, this->m_size_y))
@@ -296,7 +331,6 @@ void GameWindow::update_game_state()
             this->m_playing_field[this->m_food.get_position().first][this->m_food.get_position().second]->setPixmap(QPixmap(this->m_food_icon_path));
 
             this->display_game_state();
-            this->m_game_updated = true;
         }
         else
         {
@@ -314,33 +348,28 @@ void GameWindow::new_game()
 
 void GameWindow::keyPressEvent(QKeyEvent *event)
 {
-    if (this->m_in_game && this->m_game_updated)
+    if (this->m_in_game)
     {
-        constants::Direction current_direction = this->m_snake.get_front_direction();
         switch(event->key())
         {
             case Qt::Key_W:
             {
-                if (current_direction != constants::Direction::DOWN)
-                    this->m_snake.set_front_direction(constants::Direction::UP);
+                this->m_key_buffer.push_back(constants::Direction::UP);
                 break;
             }
             case Qt::Key_A:
             {
-                if (current_direction != constants::Direction::RIGHT)
-                    this->m_snake.set_front_direction(constants::Direction::LEFT);
+                this->m_key_buffer.push_back(constants::Direction::LEFT);
                 break;
             }
             case Qt::Key_S:
             {
-                if (current_direction != constants::Direction::UP)
-                    this->m_snake.set_front_direction(constants::Direction::DOWN);
+                this->m_key_buffer.push_back(constants::Direction::DOWN);
                 break;
             }
             case Qt::Key_D:
             {
-                if (current_direction != constants::Direction::LEFT)
-                    this->m_snake.set_front_direction(constants::Direction::RIGHT);
+                this->m_key_buffer.push_back(constants::Direction::RIGHT);
                 break;
             }
             default:
@@ -348,7 +377,6 @@ void GameWindow::keyPressEvent(QKeyEvent *event)
                 return;
             }
         }
-        this->m_game_updated = false;
     }
 }
 
