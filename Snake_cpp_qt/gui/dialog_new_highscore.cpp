@@ -1,6 +1,8 @@
 #include "dialog_new_highscore.h"
 #include "ui_dialog_new_highscore.h"
 
+#include <QValidator>
+
 #include <algorithm>
 
 #include "helper/helper.h"
@@ -13,6 +15,10 @@ DialogNewHighscore::DialogNewHighscore(unsigned int &new_highscore, QWidget *par
     this->m_ok_button = ui->btn_OK;
     this->m_line_edit_name = ui->lineEdit_name;
     this->m_table_highscore = ui->table_highscore;
+
+    // restrict line edit to alphanumeric and 10 chars
+    this->m_line_edit_name->setValidator(new QRegExpValidator( QRegExp("\\w+"), this ));
+    this->m_line_edit_name->setMaxLength(10);
 
     // get the current highscore list and init the table view
     this->m_highscore_list = get_highscore_list();
@@ -43,7 +49,6 @@ DialogNewHighscore::DialogNewHighscore(unsigned int &new_highscore, QWidget *par
 
     //connect slots
     connect(this->m_ok_button, SIGNAL (clicked()), this, SLOT (enter_name()));
-    connect(this->m_ok_button, SIGNAL (clicked()), this, SLOT (close()));
 }
 
 DialogNewHighscore::~DialogNewHighscore()
@@ -53,12 +58,17 @@ DialogNewHighscore::~DialogNewHighscore()
 
 void DialogNewHighscore::enter_name()
 {
-    auto it = std::find_if(this->m_highscore_list.begin(), this->m_highscore_list.end(),
-                 [](const auto& entry)
-                {
-                    return entry.first == "NewHighscore";
-                });
     QString name = this->m_line_edit_name->text();
-    it->first = name.toStdString();
-    save_highscore_list(this->m_highscore_list);
+    if (name != "")
+    {
+        auto it = std::find_if(this->m_highscore_list.begin(), this->m_highscore_list.end(),
+                     [](const auto& entry)
+                    {
+                        return entry.first == "NewHighscore";
+                    });
+
+        it->first = name.toStdString();
+        save_highscore_list(this->m_highscore_list);
+        this->close();
+    }
 }
