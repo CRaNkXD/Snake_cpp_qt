@@ -1,5 +1,5 @@
 #include "gamewindow.h"
-#include "helper/helper.h"
+#include <helper.h>
 
 #include <QApplication>
 

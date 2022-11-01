@@ -1,7 +1,8 @@
-#include "snake.h"
-
 #include <limits>
-#include "constants/constants.h"
+
+#include <constants.h>
+
+#include "snake.h"
 
 SnakePart::SnakePart()
     : m_position{Position(0,0)}

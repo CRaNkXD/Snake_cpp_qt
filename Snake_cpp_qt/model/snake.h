@@ -3,7 +3,7 @@
 #include <vector>
 #include <utility>
 
-#include "constants/constants.h"
+#include <constants.h>
 
 typedef unsigned short UShort ;
 typedef std::pair<UShort, UShort> Position;

@@ -3,12 +3,13 @@
 
 #include <QDebug>
 
+#include <snake.h>
+#include <food.h>
+#include <helper.h>
+#include "constants/constants.h"
+
 #include "gamewindow.h"
 #include "ui_gamewindow.h"
-#include "model/snake.h"
-#include "model/food.h"
-#include "helper/helper.h"
-#include "constants/constants.h"
 
 GameWindow::GameWindow(QWidget *parent, const UShort &size_x, const UShort &size_y)
     : QMainWindow(parent)

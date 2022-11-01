@@ -4,6 +4,11 @@
 #user defined
 Test/Google_tests/
 Test/gtest_dependency.pri
+Zeichnungen/
+Snake_cpp_qt/parse_ui.py
+build/
+
+*.gitignore
 
 *~
 *.autosave
@@ -47,6 +52,10 @@ Thumbs.db
 
 # Vim temporary files
 .*.swp
+
+# Visual Studio Code
+*.code-workspace
+.vscode
 
 # Visual Studio generated files
 *.ib_pdb_index

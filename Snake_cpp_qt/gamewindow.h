@@ -8,10 +8,10 @@
 #include <vector>
 #include <deque>
 
-#include "gui/dialog_highscore.h"
-#include "gui/dialog_new_highscore.h"
-#include "model/snake.h"
-#include "model/food.h"
+#include <dialog_highscore.h>
+#include <dialog_new_highscore.h>
+#include <snake.h>
+#include <food.h>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class GameWindow; }

@@ -5,8 +5,9 @@
 #include <utility>
 #include <string>
 
-#include "gamewindow.h"
-#include "helper/helper.h"
+#include <helper.h>
+
+// #include <gamewindow.h>
 
 dialog_highscore::dialog_highscore(QWidget *parent) :
     QDialog(parent),
@@ -20,13 +21,13 @@ dialog_highscore::dialog_highscore(QWidget *parent) :
     // get the current highscore list and init the table view
     highscore_list = get_highscore_list();
 
-    this->m_model = new QStandardItemModel(highscore_list.size(),2,this);
+    this->m_model = new QStandardItemModel(Tools::sizet_to_int(highscore_list.size()),2,this);
     this->m_table_highscore->setModel(this->m_model);
 
     this->m_model->setHorizontalHeaderLabels({"Name", "Points"});
     this->m_table_highscore->verticalHeader()->hide();
 
-    for (size_t i = 0; i != highscore_list.size(); ++i)
+    for (int i = 0; i < Tools::sizet_to_int(highscore_list.size()); ++i)
     {
         QModelIndex idx_name = this->m_model->index(i,0,QModelIndex());
         QModelIndex idx_points = this->m_model->index(i,1,QModelIndex());

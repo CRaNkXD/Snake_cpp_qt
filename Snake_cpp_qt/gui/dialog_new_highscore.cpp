@@ -5,7 +5,7 @@
 
 #include <algorithm>
 
-#include "helper/helper.h"
+#include <helper.h>
 
 DialogNewHighscore::DialogNewHighscore(unsigned int &new_highscore, QWidget *parent) :
     QDialog(parent),
@@ -23,7 +23,7 @@ DialogNewHighscore::DialogNewHighscore(unsigned int &new_highscore, QWidget *par
     // get the current highscore list and init the table view
     this->m_highscore_list = get_highscore_list();
 
-    this->m_model = new QStandardItemModel(this->m_highscore_list.size(),2,this);
+    this->m_model = new QStandardItemModel(Tools::sizet_to_int(this->m_highscore_list.size()),2,this);
     this->m_table_highscore->setModel(this->m_model);
 
     this->m_model->setHorizontalHeaderLabels({"Name", "Points"});
@@ -33,11 +33,11 @@ DialogNewHighscore::DialogNewHighscore(unsigned int &new_highscore, QWidget *par
     this->m_highscore_list.insert(std::find_if(this->m_highscore_list.begin(), this->m_highscore_list.end(),
                                        [&](const auto& entry)
                                         {
-                                            return std::stoi(entry.second) <= new_highscore;
+                                            return Tools::int_to_uint(std::stoi(entry.second)) <= new_highscore;
                                         }), new_entry);
     this->m_highscore_list.pop_back();
 
-    for (size_t i = 0; i != this->m_highscore_list.size(); ++i)
+    for (int i = 0; i != Tools::sizet_to_int(this->m_highscore_list.size()); ++i)
     {
         QModelIndex idx_name = this->m_model->index(i,0,QModelIndex());
         QModelIndex idx_points = this->m_model->index(i,1,QModelIndex());
