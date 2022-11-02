@@ -12,6 +12,7 @@
 #include <dialog_new_highscore.h>
 #include <snake.h>
 #include <food.h>
+#include <constants.h>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class GameWindow; }

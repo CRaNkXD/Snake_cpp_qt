@@ -6,7 +6,7 @@
 #include <snake.h>
 #include <food.h>
 #include <helper.h>
-#include "constants/constants.h"
+#include <constants.h>
 
 #include "gamewindow.h"
 #include "ui_gamewindow.h"
