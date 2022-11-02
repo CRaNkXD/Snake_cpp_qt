@@ -1,10 +1,9 @@
 #pragma once
 
 #include <gtest/gtest.h>
-#include <gmock/gmock-matchers.h>
 
-#include "model/snake.h"
-#include "constants/constants.h"
+#include <snake.h>
+#include <constants.h>
 
 /**
  * Fixture class to create Snake objects.

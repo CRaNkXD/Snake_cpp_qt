@@ -3,7 +3,6 @@
 
 #user defined
 Test/Google_tests/
-Test/gtest_dependency.pri
 Zeichnungen/
 Snake_cpp_qt/parse_ui.py
 build/
@@ -58,6 +57,7 @@ Thumbs.db
 .vscode
 
 # Visual Studio generated files
+.vs
 *.ib_pdb_index
 *.idb
 *.ilk

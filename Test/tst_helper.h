@@ -1,12 +1,11 @@
 #pragma once
 
 #include <gtest/gtest.h>
-#include <gmock/gmock-matchers.h>
 
-#include "constants/constants.h"
-#include "helper/helper.h"
-#include "model/snake.h"
-#include "model/food.h"
+#include <constants.h>
+#include <helper.h>
+#include <snake.h>
+#include <food.h>
 
 
 using namespace testing;
