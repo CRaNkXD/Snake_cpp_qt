@@ -12,22 +12,18 @@ set(CMAKE_AUTOUIC ON)
 # set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
 # include(CPack)
 
+# Let's nicely support folders in IDE's
+set_property(GLOBAL PROPERTY USE_FOLDERS ON)
+
 include(CTest)
 enable_testing()
+
 include(FetchContent)
-FetchContent_Declare(
-  googletest
-  URL https://github.com/google/googletest/archive/03597a01ee50ed33e9dfd640b249b4be3799d395.zip
-)
-# For Windows: Prevent overriding the parent project's compiler/linker settings
-set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
-FetchContent_MakeAvailable(googletest)
 
 find_package(Qt5 COMPONENTS Core Gui Widgets REQUIRED)
 
 
 add_subdirectory(Snake_cpp_qt)
-# Testing only available if this is the main app
-if(BUILD_TESTING)
-  add_subdirectory(Test)
-endif()
+
+add_subdirectory(Test)
+
