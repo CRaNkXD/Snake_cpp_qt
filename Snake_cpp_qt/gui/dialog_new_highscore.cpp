@@ -45,6 +45,17 @@ DialogNewHighscore::DialogNewHighscore(unsigned int &new_highscore, QWidget *par
         QString points = QString::fromStdString(this->m_highscore_list[i].second);
         this->m_model->setData(idx_name, name);
         this->m_model->setData(idx_points, points);
+
+        // Highlight the "NewHighscore" row
+        if (name == "NewHighscore") {
+            QBrush highlightBrush(QColor("#FFD700")); // Gold color
+            QFont boldFont;
+            boldFont.setBold(true);
+            this->m_model->setData(idx_name, highlightBrush, Qt::BackgroundRole);
+            this->m_model->setData(idx_points, highlightBrush, Qt::BackgroundRole);
+            this->m_model->setData(idx_name, boldFont, Qt::FontRole);
+            this->m_model->setData(idx_points, boldFont, Qt::FontRole);
+        }
     }
 
     //connect slots
