@@ -14,12 +14,12 @@ namespace Tools
 {
     int sizet_to_int(size_t val)
     {
-        return (val <= INT_MAX) ? (int)((size_t)val) : -1;
+        return (val <= std::numeric_limits<int>::max()) ? (int)((size_t)val) : -1;
     }
 
     unsigned int int_to_uint(int val)
     {
-        return (val <= UINT_MAX) ? (unsigned int)((int)val) : UINT_MAX;
+        return (val <= std::numeric_limits<unsigned int>::max()) ? (unsigned int)((int)val) : std::numeric_limits<unsigned int>::max();
     }
 }
 

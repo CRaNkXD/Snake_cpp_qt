@@ -17,7 +17,7 @@ DialogNewHighscore::DialogNewHighscore(unsigned int &new_highscore, QWidget *par
     this->m_table_highscore = ui->table_highscore;
 
     // restrict line edit to alphanumeric and 10 chars
-    this->m_line_edit_name->setValidator(new QRegExpValidator( QRegExp("\\w+"), this ));
+    this->m_line_edit_name->setValidator(new QRegularExpressionValidator( QRegularExpression("\\w+"), this ));
     this->m_line_edit_name->setMaxLength(10);
 
     // get the current highscore list and init the table view

@@ -1,4 +1,5 @@
 #include <limits>
+#include <algorithm>
 
 #include <constants.h>
 
