@@ -9,12 +9,12 @@ add_subdirectory(helper)
 add_subdirectory(gui)
 add_subdirectory(constants)
 
-target_link_libraries(${PROJECT_NAME} PRIVATE Qt5::Widgets model helper gui constants)
+target_link_libraries(${PROJECT_NAME} PRIVATE Qt6::Widgets model helper gui constants)
 
-# Set path to our custom CMAKE scripts
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${PROJECT_SOURCE_DIR}/cmake")
+# # Set path to our custom CMAKE scripts
+# set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${PROJECT_SOURCE_DIR}/cmake")
 
-# Include Qt deployment helper function
-include(windeployqt)
+# # Include Qt deployment helper function
+# include(windeployqt)
 
-windeployqt(${PROJECT_NAME})
+# windeployqt(${PROJECT_NAME})
