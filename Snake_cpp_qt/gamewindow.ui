@@ -7767,18 +7767,12 @@
     <property name="title">
      <string>Menu</string>
     </property>
-    <addaction name="actionNew_Game"/>
     <addaction name="actionShow_Highscore"/>
     <addaction name="actionShow_Settings"/>
     <addaction name="actionExit_2"/>
    </widget>
    <addaction name="menuMenu"/>
   </widget>
-  <action name="actionNew_Game">
-   <property name="text">
-    <string>New Game</string>
-   </property>
-  </action>
   <action name="actionShow_Highscore">
    <property name="text">
     <string>Show Highscore</string>
