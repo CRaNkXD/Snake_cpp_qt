@@ -14,6 +14,7 @@
 GameWindow::GameWindow(QWidget *parent, const UShort &size_x, const UShort &size_y)
     : QMainWindow(parent)
     , ui(new Ui::GameWindow)
+    , m_settings{"CRaNkXD","Snake_cpp_qt"}
     , m_size_x{size_x}
     , m_size_y{size_y}
     , m_playing_field(m_size_x, std::vector<QLabel *>(m_size_y))
@@ -28,6 +29,7 @@ GameWindow::GameWindow(QWidget *parent, const UShort &size_x, const UShort &size
 {
     ui->setupUi(this);
     m_game_timer = new QTimer(this);
+    m_game_timer_speed = m_settings.value("difficulty", constants::DIFFICULTY_SPEEDS[constants::DEFAULT_DIFFICULTY]).toInt();
     m_exit_menu = ui->actionExit_2;
     m_highscore_menu = ui->actionShow_Highscore;
     m_settings_menu = ui->actionShow_Settings;
@@ -64,7 +66,7 @@ void GameWindow::add_points(const int &points)
     m_points += points;
 }
 
-void GameWindow::display_points()
+void GameWindow::display_points() const
 {
     QString points = QString::number(m_points);
     m_points_label->setText(points);
@@ -94,7 +96,7 @@ void GameWindow::reset_game()
     display_points();
 }
 
-void GameWindow::display_game_state()
+void GameWindow::display_game_state() const
 {
     SnakeVec snake_vec = m_snake.get_snake();
     for (auto it_snake = snake_vec.begin();
@@ -403,6 +405,7 @@ void GameWindow::show_settings()
     if (m_dialog_settings->exec() == QDialog::Accepted) {
         m_game_timer_speed = m_dialog_settings->get_game_time_speed_from_difficulty();
         m_game_timer->setInterval(m_game_timer_speed);
+        m_settings.setValue("difficulty", m_game_timer_speed);
     }
 }
 
