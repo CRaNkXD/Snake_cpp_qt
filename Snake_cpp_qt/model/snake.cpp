@@ -85,7 +85,7 @@ const UShort& Snake::get_length() const
 
 void Snake::move()
 {
-    for (auto it_snake = this->m_snake.rend() - this->m_length;
+    for (auto it_snake = std::next(this->m_snake.rend(), - this->m_length);
          it_snake != this->m_snake.rend();
          ++it_snake)
     {
@@ -123,7 +123,7 @@ void Snake::move()
         }
         else if (it_snake->is_new)
         {
-            // do not move the new item because it is iniitally located
+            // do not move the new item because it is initially located
             // on the same position as previous last item
             it_snake->is_new = false;
         }
