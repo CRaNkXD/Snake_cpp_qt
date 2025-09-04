@@ -324,9 +324,23 @@ void GameWindow::update_game_state()
         {
             if (this->m_food.is_eaten())
             {
-                do{
+                // Collect all free positions into a vector, then randomly select one
+                std::vector<Position> free_positions;
+                for (UShort x = 0; x < this->m_size_x; ++x) {
+                    for (UShort y = 0; y < this->m_size_y; ++y) {
+                        Position pos(x, y);
+                        if (!this->m_snake.is_occupied(pos)) {
+                            free_positions.push_back(pos);
+                        }
+                    }
+                }
+                if (!free_positions.empty()) {
+                    this->m_food.set_position(get_rand_position_from_vector(free_positions));
+                }
+                else{
+                    // This should not happen as we check for win condition above
                     this->m_food.set_position(rand_position(this->m_size_x - 1, this->m_size_y - 1));
-                } while(this->m_snake.is_occupied(this->m_food.get_position()));
+                }
                 this->m_food.set_eaten(false);
             }
             this->m_playing_field[this->m_food.get_position().first][this->m_food.get_position().second]->setPixmap(QPixmap(this->m_food_icon_path));

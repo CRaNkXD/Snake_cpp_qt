@@ -33,6 +33,15 @@ Position rand_position(const UShort &max_x, const UShort &max_y)
     return rand_position;
 }
 
+Position get_rand_position_from_vector(const std::vector<Position> &positions)
+{
+    UShort max = positions.size() - 1;
+    std::random_device seed_gen;
+    std::mt19937 gen(seed_gen());
+    std::uniform_int_distribution<UShort> dist(0, max);
+    return positions.at(dist(gen));
+}
+
 bool snake_hit_wall(const Snake &snake, const UShort &max_x, const UShort &max_y)
 {
     SnakeVec snake_vec = snake.get_snake();
