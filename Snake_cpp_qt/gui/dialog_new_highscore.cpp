@@ -12,54 +12,54 @@ DialogNewHighscore::DialogNewHighscore(unsigned int &new_highscore, QWidget *par
     ui(new Ui::DialogNewHighscore)
 {
     ui->setupUi(this);
-    this->m_ok_button = ui->btn_OK;
-    this->m_line_edit_name = ui->lineEdit_name;
-    this->m_table_highscore = ui->table_highscore;
+    m_ok_button = ui->btn_OK;
+    m_line_edit_name = ui->lineEdit_name;
+    m_table_highscore = ui->table_highscore;
 
     // restrict line edit to alphanumeric and 10 chars
-    this->m_line_edit_name->setValidator(new QRegularExpressionValidator( QRegularExpression("\\w+"), this ));
-    this->m_line_edit_name->setMaxLength(10);
+    m_line_edit_name->setValidator(new QRegularExpressionValidator( QRegularExpression("\\w+"), this ));
+    m_line_edit_name->setMaxLength(10);
 
     // get the current highscore list and init the table view
-    this->m_highscore_list = get_highscore_list();
+    m_highscore_list = get_highscore_list();
 
-    this->m_model = new QStandardItemModel(Tools::sizet_to_int(this->m_highscore_list.size()),2,this);
-    this->m_table_highscore->setModel(this->m_model);
+    m_model = new QStandardItemModel(Tools::sizet_to_int(m_highscore_list.size()),2,this);
+    m_table_highscore->setModel(m_model);
 
-    this->m_model->setHorizontalHeaderLabels({"Name", "Points"});
-    this->m_table_highscore->verticalHeader()->hide();
+    m_model->setHorizontalHeaderLabels({"Name", "Points"});
+    m_table_highscore->verticalHeader()->hide();
 
     std::pair<std::string, std::string> new_entry{"NewHighscore", std::to_string(new_highscore)};
-    this->m_highscore_list.insert(std::find_if(this->m_highscore_list.begin(), this->m_highscore_list.end(),
+    m_highscore_list.insert(std::find_if(m_highscore_list.begin(), m_highscore_list.end(),
                                        [&](const auto& entry)
                                         {
                                             return Tools::int_to_uint(std::stoi(entry.second)) <= new_highscore;
                                         }), new_entry);
-    this->m_highscore_list.pop_back();
+    m_highscore_list.pop_back();
 
-    for (int i = 0; i != Tools::sizet_to_int(this->m_highscore_list.size()); ++i)
+    for (int i = 0; i != Tools::sizet_to_int(m_highscore_list.size()); ++i)
     {
-        QModelIndex idx_name = this->m_model->index(i,0,QModelIndex());
-        QModelIndex idx_points = this->m_model->index(i,1,QModelIndex());
-        QString name = QString::fromStdString(this->m_highscore_list[i].first);
-        QString points = QString::fromStdString(this->m_highscore_list[i].second);
-        this->m_model->setData(idx_name, name);
-        this->m_model->setData(idx_points, points);
+        QModelIndex idx_name = m_model->index(i,0,QModelIndex());
+        QModelIndex idx_points = m_model->index(i,1,QModelIndex());
+        QString name = QString::fromStdString(m_highscore_list[i].first);
+        QString points = QString::fromStdString(m_highscore_list[i].second);
+        m_model->setData(idx_name, name);
+        m_model->setData(idx_points, points);
 
         // Highlight the "NewHighscore" row
         if (name == "NewHighscore") {
             QBrush highlightBrush(QColor("#FFD700")); // Gold color
             QFont boldFont;
             boldFont.setBold(true);
-            this->m_model->setData(idx_name, highlightBrush, Qt::BackgroundRole);
-            this->m_model->setData(idx_points, highlightBrush, Qt::BackgroundRole);
-            this->m_model->setData(idx_name, boldFont, Qt::FontRole);
-            this->m_model->setData(idx_points, boldFont, Qt::FontRole);
+            m_model->setData(idx_name, highlightBrush, Qt::BackgroundRole);
+            m_model->setData(idx_points, highlightBrush, Qt::BackgroundRole);
+            m_model->setData(idx_name, boldFont, Qt::FontRole);
+            m_model->setData(idx_points, boldFont, Qt::FontRole);
         }
     }
 
     //connect slots
-    connect(this->m_ok_button, SIGNAL (clicked()), this, SLOT (enter_name()));
+    connect(m_ok_button, SIGNAL (clicked()), this, SLOT (enter_name()));
 }
 
 DialogNewHighscore::~DialogNewHighscore()
@@ -69,17 +69,17 @@ DialogNewHighscore::~DialogNewHighscore()
 
 void DialogNewHighscore::enter_name()
 {
-    QString name = this->m_line_edit_name->text();
+    QString name = m_line_edit_name->text();
     if (name != "")
     {
-        auto it = std::find_if(this->m_highscore_list.begin(), this->m_highscore_list.end(),
+        auto it = std::find_if(m_highscore_list.begin(), m_highscore_list.end(),
                      [](const auto& entry)
                     {
                         return entry.first == "NewHighscore";
                     });
 
         it->first = name.toStdString();
-        save_highscore_list(this->m_highscore_list);
-        this->close();
+        save_highscore_list(m_highscore_list);
+        close();
     }
 }

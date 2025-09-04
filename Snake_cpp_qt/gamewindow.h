@@ -10,6 +10,7 @@
 
 #include <dialog_highscore.h>
 #include <dialog_new_highscore.h>
+#include <dialog_settings.h>
 #include <snake.h>
 #include <food.h>
 #include <constants.h>
@@ -33,13 +34,15 @@ public:
     void display_game_state();
 
 private:
-    Ui::GameWindow *ui;
+    Ui::GameWindow* ui;
     dialog_highscore* m_dialog_highscore;
     DialogNewHighscore* m_dialog_new_highscore;
-    QAction *m_exit_menu;
-    QAction *m_highscore_menu;
-    QPushButton *m_start_button;
-    QLabel *m_points_label;
+    DialogSettings* m_dialog_settings;
+    QAction* m_exit_menu;
+    QAction* m_highscore_menu;
+    QAction* m_settings_menu;
+    QPushButton* m_start_button;
+    QLabel* m_points_label;
     UShort m_size_x;
     UShort m_size_y;
     PlayingField m_playing_field;
@@ -49,7 +52,7 @@ private:
     bool m_in_game;
     bool m_won;
     unsigned int m_points;
-    QTimer *m_game_timer;
+    QTimer* m_game_timer;
     std::deque<constants::Direction> m_key_buffer;
     QString m_snake_body_horizontal_icon_path = ":/pics/snake/snake_body_horizontal.png";
     QString m_snake_body_vertical_icon_path = ":/pics/snake/snake_body_vertical.png";
@@ -67,6 +70,7 @@ private:
     QString m_snake_body_curve_UP_RIGHT_icon_path = ":/pics/snake/snake_body_curve_UP_RIGHT.png";
     QString m_empty_field_icon_path = ":/pics/snake/empty_field.png";
     QString m_food_icon_path = ":/pics/snake/food.png";
+    int m_game_timer_speed = constants::DIFFICULTY_SPEEDS[constants::DEFAULT_DIFFICULTY];
 
 private slots:
     void start_game();

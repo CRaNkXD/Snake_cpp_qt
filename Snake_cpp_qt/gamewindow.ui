@@ -7769,7 +7769,7 @@
     </property>
     <addaction name="actionNew_Game"/>
     <addaction name="actionShow_Highscore"/>
-    <addaction name="actionSettings"/>
+    <addaction name="actionShow_Settings"/>
     <addaction name="actionExit_2"/>
    </widget>
    <addaction name="menuMenu"/>
@@ -7794,7 +7794,7 @@
     <string>Difficulty</string>
    </property>
   </action>
-  <action name="actionSettings">
+  <action name="actionShow_Settings">
    <property name="text">
     <string>Settings</string>
    </property>

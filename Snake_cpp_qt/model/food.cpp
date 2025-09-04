@@ -7,25 +7,25 @@ Food::Food(const Position& position, const int& points)
 
 const Position& Food::get_position() const
 {
-    return this->m_position;
+    return m_position;
 }
 
 void Food::set_position(const Position &position)
 {
-    this->m_position = position;
+    m_position = position;
 }
 
 const int& Food::get_points() const
 {
-    return this->m_points;
+    return m_points;
 }
 
 const bool& Food::is_eaten() const
 {
-    return this->m_eaten;
+    return m_eaten;
 }
 
 void Food::set_eaten (const bool &eaten)
 {
-    this->m_eaten = eaten;
+    m_eaten = eaten;
 }
